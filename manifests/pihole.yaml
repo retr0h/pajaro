@@ -1,0 +1,32 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: pihole
+  namespace: pihole
+spec:
+  chart: pihole
+  repo: https://mojo2600.github.io/pihole-kubernetes
+  targetNamespace: pihole
+  set:
+    password: "NotVerySafePassword"
+  valuesContent: |-
+    dnsmasq:
+      customDnsEntries:
+        - address=/boyne/192.168.6.154
+        - address=/latham/192.168.6.157
+
+    # persistentVolumeClaim:
+    #   enabled: true
+
+    serviceTCP:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/allow-shared-ip: pihole-svc
+      type: LoadBalancer
+
+    serviceUDP:
+      type: LoadBalancer
+      annotations:
+        metallb.universe.tf/allow-shared-ip: pihole-svc
+      type: LoadBalancer
