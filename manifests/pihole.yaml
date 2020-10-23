@@ -13,11 +13,11 @@ spec:
   valuesContent: |-
     dnsmasq:
       customDnsEntries:
-        - address=/boyne/192.168.6.154
-        - address=/latham/192.168.6.157
+        - address=/boyne/192.168.6.10
+        - address=/latham/192.168.6.11
 
-    # persistentVolumeClaim:
-    #   enabled: true
+    persistentVolumeClaim:
+      enabled: true
 
     serviceTCP:
       type: LoadBalancer
