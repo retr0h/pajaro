@@ -6,6 +6,7 @@ metadata:
   namespace: kube-system
 spec:
   chart: stable/metallb
+  targetNamespace: kube-system
   set:
     configInline.address-pools[0].name: default
     configInline.address-pools[0].protocol: layer2

@@ -8,25 +8,31 @@ spec:
   chart: pihole
   repo: https://mojo2600.github.io/pihole-kubernetes
   targetNamespace: pihole
-  set:
-    password: "NotVerySafePassword"
   valuesContent: |-
+    DNS1: 1.1.1.1
+    DNS2: 1.1.1.1
+    extraEnvVars:
+      WEBPASSWORD: foo
     dnsmasq:
       customDnsEntries:
-        - address=/boyne/192.168.6.10
-        - address=/latham/192.168.6.11
+        - address=/boyne.lab./192.168.6.10
+        - address=/latham.lab./192.168.6.11
+
+        - address=/prometheus.lab./192.168.6.221
+        - address=/grafana.lab./192.168.6.221
+        - address=/pihole.lab./192.168.6.222
 
     persistentVolumeClaim:
       enabled: true
 
     serviceTCP:
-      type: LoadBalancer
+      loadBalancerIP: 192.168.6.222
       annotations:
         metallb.universe.tf/allow-shared-ip: pihole-svc
       type: LoadBalancer
 
     serviceUDP:
-      type: LoadBalancer
+      loadBalancerIP: 192.168.6.222
       annotations:
         metallb.universe.tf/allow-shared-ip: pihole-svc
       type: LoadBalancer

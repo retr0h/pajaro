@@ -1,0 +1,28 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  chart: kube-prometheus-stack
+  repo: https://prometheus-community.github.io/helm-charts
+  targetNamespace: monitoring
+  valuesContent: |-
+    alertmanager:
+      enabled: false
+
+    grafana:
+      ingress:
+        enabled: false
+        hosts:
+          - grafana.lab
+        annotations:
+          kubernetes.io/ingress.class: traefik
+
+    prometheus:
+      service:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.6.221
+        annotations:
+          metallb.universe.tf/allow-shared-ip: prometheus-kube-prometheus-prometheus
