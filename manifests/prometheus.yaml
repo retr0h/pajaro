@@ -14,15 +14,6 @@ spec:
 
     grafana:
       ingress:
-        enabled: false
-        hosts:
-          - grafana.lab
+        enabled: true
         annotations:
           kubernetes.io/ingress.class: traefik
-
-    prometheus:
-      service:
-        type: LoadBalancer
-        loadBalancerIP: 192.168.6.221
-        annotations:
-          metallb.universe.tf/allow-shared-ip: prometheus-kube-prometheus-prometheus
