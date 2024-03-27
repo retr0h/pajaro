@@ -2,11 +2,18 @@
 
 ## Installing
 
-Create namespaces
+### Metallb
 
-    $ k create ns pihole
+    $ k create ns metallb-system
+    $ k apply -f manifests/metallb.yaml
+    $ k apply -f manifests/metallb_crd.yaml
+
+### Prometheus
+
     $ k create ns monitoring
+    $ k apply -f manifests/prometheus.yaml
 
-Drop in the the manifests
+### PiHole
 
-    $ cp manifests/*.yaml /var/lib/rancher/k3s/server/manifests
+    $ k create ns pihole-system
+    $ k apply -f manifests/pihole.yaml

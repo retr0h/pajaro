@@ -3,36 +3,46 @@ apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
   name: pihole
-  namespace: pihole
+  namespace: pihole-system
 spec:
   chart: pihole
   repo: https://mojo2600.github.io/pihole-kubernetes
-  targetNamespace: pihole
+  targetNamespace: pihole-system
   valuesContent: |-
     DNS1: 1.1.1.1
-    DNS2: 1.1.1.1
+    DNS2: 8.8.8.8
     extraEnvVars:
       WEBPASSWORD: foo
     dnsmasq:
       customDnsEntries:
-        - address=/boyne.lab./192.168.6.10
-        - address=/latham.lab./192.168.6.11
+        - address=/nerd.lab./192.168.0.241
 
-        - address=/prometheus.lab./192.168.6.221
-        - address=/grafana.lab./192.168.6.221
-        - address=/pihole.lab./192.168.6.222
+        - address=/grafana.lab./192.168.0.246
+        - address=/pihole.lab./192.168.0.247
 
     persistentVolumeClaim:
       enabled: true
 
+    serviceWeb:
+      loadBalancerIP: 192.168.0.247
+      annotations:
+        metallb.universe.tf/allow-shared-ip: pihole-svc
+      type: LoadBalancer
+
+    serviceDns:
+      loadBalancerIP: 192.168.0.247
+      annotations:
+        metallb.universe.tf/allow-shared-ip: pihole-svc
+      type: LoadBalancer
+
     serviceTCP:
-      loadBalancerIP: 192.168.6.222
+      loadBalancerIP: 192.168.0.247
       annotations:
         metallb.universe.tf/allow-shared-ip: pihole-svc
       type: LoadBalancer
 
     serviceUDP:
-      loadBalancerIP: 192.168.6.222
+      loadBalancerIP: 192.168.0.247
       annotations:
         metallb.universe.tf/allow-shared-ip: pihole-svc
       type: LoadBalancer
